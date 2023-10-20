@@ -13,7 +13,9 @@ services:
     restart: always
   app:
     # Make sure to use the latest release from https://hedgedoc.org/latest-release
-    image: quay.io/hedgedoc/hedgedoc:1.9.9
+    image: quay.io/hedgedoc/hedgedoc:latest
+    env_file:
+    - .env
     environment:
       - CMD_DB_URL=postgres://hedgedoc:${DBPASSWORD}@database:5432/hedgedoc
       - CMD_DOMAIN=${DOMAIN}
