@@ -6,7 +6,7 @@ services:
     image: postgres:13.4-alpine
     environment:
       - POSTGRES_USER=hedgedoc
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_PASSWORD=${DBPASSWORD}
       - POSTGRES_DB=hedgedoc
     volumes:
       - database:/var/lib/postgresql/data
@@ -15,7 +15,7 @@ services:
     # Make sure to use the latest release from https://hedgedoc.org/latest-release
     image: quay.io/hedgedoc/hedgedoc:1.9.9
     environment:
-      - CMD_DB_URL=postgres://hedgedoc:password@database:5432/hedgedoc
+      - CMD_DB_URL=postgres://hedgedoc:${DBPASSWORD}@database:5432/hedgedoc
       - CMD_DOMAIN=${DOMAIN}
       - CMD_URL_ADDPORT=flase
       - VIRTUAL_PORT=3000
