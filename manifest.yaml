@@ -15,6 +15,7 @@ globals:
   shortname: hedgedoc
   path: /root/hedgedoc
   repo: https://github.com/TaylorJadin/hedgedoc-jps
+  dbPass: ${fn.password}
 
 nodes:
   nodeType: dockerengine
@@ -54,6 +55,7 @@ actions:
         sed -i \
         -e "s|DOMAIN=.*|DOMAIN=${env.domain}|" \
         -e "s|EMAIL=.*|EMAIL=${user.email}|" \
+        -e "s|DBPASSWORD=.*|DBPASSWORD=${globals.dbPass}|" \
         .env
         docker-compose up -d
     - env.file.AddFavorite:
