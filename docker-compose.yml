@@ -19,7 +19,6 @@ services:
     environment:
       - CMD_DB_URL=postgres://hedgedoc:${DBPASSWORD}@database:5432/hedgedoc
       - CMD_DOMAIN=${DOMAIN}
-      - CMD_URL_ADDPORT=flase
       - VIRTUAL_PORT=3000
       - VIRTUAL_HOST=${DOMAIN}
       - LETSENCRYPT_HOST=${DOMAIN}
