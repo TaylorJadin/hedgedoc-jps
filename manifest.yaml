@@ -14,7 +14,7 @@ description:
 globals:
   shortname: hedgedoc
   path: /root/hedgedoc
-  repo: https://github.com/taylorjadin/docker-jps-starter
+  repo: https://github.com/TaylorJadin/hedgedoc-jps
 
 nodes:
   nodeType: dockerengine
