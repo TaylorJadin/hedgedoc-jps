@@ -1,0 +1,64 @@
+version: '2'
+
+services:
+  
+  database:
+    image: postgres:13.4-alpine
+    environment:
+      - POSTGRES_USER=hedgedoc
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=hedgedoc
+    volumes:
+      - database:/var/lib/postgresql/data
+    restart: always
+  app:
+    # Make sure to use the latest release from https://hedgedoc.org/latest-release
+    image: quay.io/hedgedoc/hedgedoc:1.9.9
+    environment:
+      - CMD_DB_URL=postgres://hedgedoc:password@database:5432/hedgedoc
+      - CMD_DOMAIN=${DOMAIN}
+      - CMD_URL_ADDPORT=flase
+      - VIRTUAL_PORT=3000
+      - VIRTUAL_HOST=${DOMAIN}
+      - LETSENCRYPT_HOST=${DOMAIN}
+      - LETSENCRYPT_EMAIL=${EMAIL}
+      - CMD_PROTOCOL_USESSL=true
+    volumes:
+      - uploads:/hedgedoc/public/uploads
+    restart: always
+    depends_on:
+      - database
+
+  nginx-proxy:
+    build: 
+      context: .
+      dockerfile: nginx.dockerfile
+    container_name: nginx-proxy 
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - certs:/etc/nginx/certs:ro
+      - /etc/nginx/vhost.d
+      - /usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    labels:
+      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: ""
+    restart: unless-stopped
+
+  letsencrypt:
+    image: nginxproxy/acme-companion
+    container_name: letsencrypt 
+    volumes:
+      - certs:/etc/nginx/certs
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    volumes_from:
+      - nginx-proxy
+    restart: unless-stopped
+
+volumes:
+  certs:
+  database:
+  uploads:
+  
+
