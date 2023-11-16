@@ -58,8 +58,9 @@ actions:
         -e "s|EMAIL=.*|EMAIL=${user.email}|" \
         -e "s|DATABASE_PASSWORD=.*|DATABASE_PASSWORD=${globals.dbPass}|" \
         .env
+        echo "alias manage_users='docker-compose exec app bin/manage_users'" >> ~/.bashrc
         docker-compose up -d
-        docker-compose exec app bin/manage_users --add 
+        docker-compose exec app bin/manage_users --add ${user.email} --pass ${user.appPassword}
     - env.file.AddFavorite:
         nodeGroup: cp
         path: ${globals.path}
@@ -108,4 +109,11 @@ addons:
             docker-compose up -d --force-recreate
 success: | 
   **${env.displayName}**: [https://${env.domain}/](https://${env.domain}/)
-  - If you want to map a custom domain, point an A record at **${nodes.cp.extIPs}** then use the **Domain Configuration** Add-On to change the domain name and issue a new Let's Encrypt cert.
+  
+  **Username:** ${user.email}
+  
+  **Password:** ${user.appPassword}
+
+  You can create additional user accounts in Hedgedoc by opening the terminal and running `manage_users`.
+  
+  If you want to map a custom domain, point an A record at **${nodes.cp.extIPs}** then use the **Domain Configuration** Add-On to change the domain name and issue a new Let's Encrypt cert.
