@@ -3,7 +3,7 @@ id: hedgedoc-jps
 version: '1.0'
 appVersion: latest
 name: Hedgedoc
-logo: https://reclaimcloud-reclm.cdn.jelastic.net/wp-content/uploads/2020/06/cropped-Reclaim-Cloud-Logo-New.png
+logo: https://raw.githubusercontent.com/TaylorJadin/hedgedoc-jps/main/logo.png
 homepage: https://reclaim.cloud
 categories: 
 - apps/education
