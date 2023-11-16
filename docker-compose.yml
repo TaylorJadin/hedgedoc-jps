@@ -6,7 +6,7 @@ services:
     image: postgres:13.4-alpine
     environment:
       - POSTGRES_USER=hedgedoc
-      - POSTGRES_PASSWORD=${DBPASSWORD}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
       - POSTGRES_DB=hedgedoc
     volumes:
       - database:/var/lib/postgresql/data
@@ -17,7 +17,7 @@ services:
     env_file:
     - .env
     environment:
-      - CMD_DB_URL=postgres://hedgedoc:${DBPASSWORD}@database:5432/hedgedoc
+      - CMD_DB_URL=postgres://hedgedoc:${DATABASE_PASSWORD}@database:5432/hedgedoc
       - CMD_DOMAIN=${DOMAIN}
       - VIRTUAL_PORT=3000
       - VIRTUAL_HOST=${DOMAIN}

@@ -52,12 +52,14 @@ actions:
         git clone ${globals.repo} --depth 1 .
         rm -rf .git
         rm manifest.yaml
+        rm logo.png
         sed -i \
         -e "s|DOMAIN=.*|DOMAIN=${env.domain}|" \
         -e "s|EMAIL=.*|EMAIL=${user.email}|" \
-        -e "s|DBPASSWORD=.*|DBPASSWORD=${globals.dbPass}|" \
+        -e "s|DATABASE_PASSWORD=.*|DATABASE_PASSWORD=${globals.dbPass}|" \
         .env
         docker-compose up -d
+        docker-compose exec app bin/manage_users --add 
     - env.file.AddFavorite:
         nodeGroup: cp
         path: ${globals.path}
