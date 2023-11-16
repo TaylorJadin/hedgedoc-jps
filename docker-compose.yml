@@ -9,7 +9,7 @@ services:
       - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
       - POSTGRES_DB=hedgedoc
     volumes:
-      - database:/var/lib/postgresql/data
+      - ./db:/var/lib/postgresql/data
     restart: always
   app:
     # Make sure to use the latest release from https://hedgedoc.org/latest-release
@@ -25,7 +25,7 @@ services:
       - LETSENCRYPT_EMAIL=${EMAIL}
       - CMD_PROTOCOL_USESSL=true
     volumes:
-      - uploads:/hedgedoc/public/uploads
+      - ./uploads:/hedgedoc/public/uploads
     restart: always
     depends_on:
       - database
