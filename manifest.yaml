@@ -47,19 +47,32 @@ onInstall:
 actions:
   setup:      
     - cmd[cp]: |-
+        # Update packages
         yum update -y
+        
+        # set up hedgdoc folder and get files
         mkdir -p ${globals.path}
         cd ${globals.path}
         git clone ${globals.repo} --depth 1 .
         rm -rf .git
         rm manifest.yaml
         rm logo.png
+
+        # set up upload fodler with the correct permissions
+        mkdir -p ${globals.path}/uploads/
+        chown -R 10000:10000 ${globals.path}/uploads/
+        
+        # set up .env file
         sed -i \
         -e "s|DOMAIN=.*|DOMAIN=${env.domain}|" \
         -e "s|EMAIL=.*|EMAIL=${user.email}|" \
         -e "s|DATABASE_PASSWORD=.*|DATABASE_PASSWORD=${globals.dbPass}|" \
         .env
-        echo "alias manage_users='cd /root/hedgedoc && docker-compose exec app bin/manage_users'" >> ~/.bashrc
+
+        # make handy bash alias
+        echo "alias manage_users='cd ${globals.path} && docker-compose exec app bin/manage_users'" >> ~/.bashrc
+        
+        # start up hedgedoc and add a user account
         docker-compose up -d
         sleep 5
         docker-compose exec -T app bin/manage_users --add ${user.email} --pass ${user.appPassword}
