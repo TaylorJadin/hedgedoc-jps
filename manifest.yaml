@@ -1,5 +1,5 @@
 type: install
-id: hedgedoc-jps
+id: hedgedoc
 version: '1.0'
 appVersion: latest
 name: Hedgedoc
