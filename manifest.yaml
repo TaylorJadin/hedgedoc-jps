@@ -47,7 +47,7 @@ onInstall:
 actions:
   setup:      
     - cmd[cp]: |-
-        yum update -y 2>&1 > /dev/null
+        yum update -y
         mkdir -p ${globals.path}
         cd ${globals.path}
         git clone ${globals.repo} --depth 1 .
@@ -60,7 +60,7 @@ actions:
         -e "s|DATABASE_PASSWORD=.*|DATABASE_PASSWORD=${globals.dbPass}|" \
         .env
         echo "alias manage_users='cd /root/hedgedoc && docker-compose exec app bin/manage_users'" >> ~/.bashrc
-        docker-compose up -d 2>&1 > /dev/null
+        docker-compose up -d
         sleep 5
         docker-compose exec -T app bin/manage_users --add ${user.email} --pass ${user.appPassword}
     - env.file.AddFavorite:
